@@ -1,5 +1,5 @@
 import React from 'react';
-import { MessageCircle, Mail, Globe } from 'lucide-react';
+import { MessageCircle, Mail, Globe, Instagram } from 'lucide-react';
 import logo from '../assets/logo.png';
 import { Link } from 'react-router-dom';
 
@@ -47,8 +47,9 @@ const Footer: React.FC = () => {
           <div>
             <h4 style={{ marginBottom: '1.5rem', fontSize: '1.1rem' }}>Follow Us</h4>
             <div style={{ display: 'flex', gap: '1rem' }}>
-              <a href="#" style={socialIconStyle}><MessageCircle size={20} /></a>
-              <a href="#" style={socialIconStyle}><Mail size={20} /></a>
+              <a href="https://www.instagram.com/velmont.estate?igsh=cHYyZjY3eDE4dzI2" target="_blank" rel="noopener noreferrer" style={socialIconStyle}><Instagram size={20} /></a>
+              <a href="https://wa.me/918284883282" target="_blank" rel="noopener noreferrer" style={socialIconStyle}><MessageCircle size={20} /></a>
+              <a href="mailto:velmontestate@gmail.com" style={socialIconStyle}><Mail size={20} /></a>
               <a href="#" style={socialIconStyle}><Globe size={20} /></a>
             </div>
           </div>
