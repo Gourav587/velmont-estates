@@ -131,8 +131,11 @@ const Navbar: React.FC = () => {
       )}
 
       <style>{`
+        .nav-mobile-toggle-group { display: none !important; }
+        
         @media (max-width: 768px) {
           .nav-desktop { display: none !important; }
+          .nav-mobile-toggle-group { display: flex !important; }
           .nav-mobile-toggle { display: block !important; }
         }
       `}</style>
