@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Sun, Moon } from 'lucide-react';
 import logo from '../assets/logo.png';
+import { useTheme } from '../context/ThemeContext';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = React.useState(false);
+  const { theme, toggleTheme } = useTheme();
   const location = useLocation();
 
   const navLinks = [
@@ -36,26 +38,69 @@ const Navbar: React.FC = () => {
           <img src={logo} alt="Velmont Estates" style={{ height: '60px', width: 'auto', objectFit: 'contain' }} />
         </Link>
 
-        {/* Desktop Links */}
-        <div style={{ display: 'flex', gap: '2rem' }} className="nav-desktop">
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              to={link.path}
-              style={{
-                color: activeLink(link.path),
-                fontWeight: 500,
-                fontSize: '0.9rem'
-              }}
-            >
-              {link.name}
-            </Link>
-          ))}
+        {/* Desktop Links & Toggle */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }} className="nav-desktop">
+          <div style={{ display: 'flex', gap: '2rem' }}>
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                to={link.path}
+                style={{
+                  color: activeLink(link.path),
+                  fontWeight: 500,
+                  fontSize: '0.9rem'
+                }}
+              >
+                {link.name}
+              </Link>
+            ))}
+          </div>
+          
+          <button 
+            onClick={toggleTheme}
+            style={{
+              background: 'var(--secondary)',
+              color: 'var(--accent)',
+              border: '1px solid var(--border)',
+              width: '40px',
+              height: '40px',
+              borderRadius: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease'
+            }}
+            aria-label="Toggle Theme"
+          >
+            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
         </div>
 
-        {/* Mobile Menu Toggle */}
-        <div className="nav-mobile-toggle" onClick={() => setIsOpen(!isOpen)} style={{ display: 'none', cursor: 'pointer' }}>
-          {isOpen ? <X size={28} /> : <Menu size={28} />}
+        {/* Mobile Toggle Group */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }} className="nav-mobile-toggle-group">
+          <button 
+            onClick={toggleTheme}
+            style={{
+              background: 'var(--secondary)',
+              color: 'var(--accent)',
+              border: '1px solid var(--border)',
+              width: '40px',
+              height: '40px',
+              borderRadius: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer'
+            }}
+            aria-label="Toggle Theme"
+          >
+            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+          
+          <div className="nav-mobile-toggle" onClick={() => setIsOpen(!isOpen)} style={{ display: 'none', cursor: 'pointer' }}>
+            {isOpen ? <X size={28} /> : <Menu size={28} />}
+          </div>
         </div>
       </div>
 

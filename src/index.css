@@ -1,27 +1,44 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;700&display=swap');
 
 :root {
-  /* Dark Theme Colors */
-  --primary: #0a0a0a;       /* Deep Black */
-  --secondary: #161616;     /* Dark Grey/Card Background */
-  --accent: #d4af37;        /* Gold */
-  --accent-hover: #b8860b;  /* Darker Gold */
-  --success: #22c55e;       /* Green for WhatsApp */
-  --text-main: #ffffff;     /* White */
-  --text-muted: #94a3b8;    /* Muted Slate/Grey */
-  --bg-main: #0a0a0a;       /* Dark Background */
-  --border: rgba(255, 255, 255, 0.05);
-  
-  /* Spacing */
+  /* Common Variables (Spacing, Typography) */
   --space-xs: 0.5rem;
   --space-sm: 1rem;
   --space-md: 2rem;
   --space-lg: 4rem;
   --space-xl: 8rem;
-
-  /* Typography */
   --font-main: 'Inter', sans-serif;
   --font-heading: 'Montserrat', sans-serif;
+  
+  /* Brand Constants */
+  --accent: #d4af37;        /* Gold */
+  --accent-hover: #b8860b;  /* Darker Gold */
+  --success: #22c55e;       /* Green for WhatsApp */
+}
+
+/* Dark Theme (Default) */
+[data-theme='dark'],
+:root:not([data-theme='light']) {
+  --primary: #0a0a0a;
+  --secondary: #161616;
+  --bg-main: #0a0a0a;
+  --text-main: #ffffff;
+  --text-muted: #94a3b8;
+  --border: rgba(255, 255, 255, 0.05);
+  --glass-bg: rgba(10, 10, 10, 0.8);
+  --card-bg: #161616;
+}
+
+/* Light Theme */
+[data-theme='light'] {
+  --primary: #ffffff;
+  --secondary: #f8fafc;
+  --bg-main: #ffffff;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --border: rgba(0, 0, 0, 0.05);
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --card-bg: #ffffff;
 }
 
 * {
@@ -89,12 +106,12 @@ ul {
 
 .btn-primary {
   background-color: var(--text-main);
-  color: white;
+  color: var(--bg-main);
 }
 
 .btn-primary:hover {
   background-color: var(--accent);
-  color: var(--text-main);
+  color: white;
   transform: translateY(-2px);
 }
 
@@ -108,30 +125,30 @@ ul {
   transform: translateY(-2px);
 }
 
-/* Glassmorphism - Light Version */
+/* Glassmorphism */
 .glass {
-  background: rgba(10, 10, 10, 0.8);
+  background: var(--glass-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--border);
 }
 
 /* Contact Form Inputs */
 .form-input {
   width: 100%;
   padding: 1rem;
-  background: white;
-  border: 1px solid rgba(0,0,0,0.1);
+  background: var(--card-bg);
+  border: 1px solid var(--border);
   border-radius: 8px;
-  color: #0f172a; /* Slate 900 */
+  color: var(--text-main);
   outline: none;
   font-family: inherit;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: all 0.2s;
 }
 
 .form-input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.1); /* Gold shadow */
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.1);
 }
 
 textarea.form-input {

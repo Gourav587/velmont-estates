@@ -7,7 +7,8 @@ const Hero: React.FC = () => {
       minHeight: '100vh',
       display: 'flex',
       alignItems: 'center',
-      background: 'linear-gradient(135deg, #0a0a0a 0%, #161616 100%)',
+      background: 'var(--bg-main)',
+      backgroundImage: 'linear-gradient(135deg, var(--bg-main) 0%, var(--secondary) 100%)',
       position: 'relative',
       overflow: 'hidden'
     }}>
@@ -69,7 +70,8 @@ const Hero: React.FC = () => {
               href="mailto:velmontestate@gmail.com"
               className="btn"
               style={{
-                border: '1px solid rgba(0,0,0,0.1)',
+                border: '1px solid var(--border)',
+                background: 'var(--secondary)',
                 padding: '1rem 2rem',
                 color: 'var(--text-main)'
               }}

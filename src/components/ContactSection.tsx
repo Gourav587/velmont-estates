@@ -127,7 +127,7 @@ const ContactSection: React.FC = () => {
             padding: '3rem',
             background: 'var(--secondary)',
             borderRadius: '24px',
-            border: '1px solid rgba(255,255,255,0.05)'
+            border: '1px solid var(--border)'
           }}>
             <form 
               ref={formRef}
