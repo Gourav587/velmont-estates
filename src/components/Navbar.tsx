@@ -21,7 +21,7 @@ const Navbar: React.FC = () => {
     location.pathname === path ? 'var(--accent)' : 'var(--text-main)';
 
   return (
-    <nav className="glass" style={{
+    <nav aria-label="Main navigation" className="glass" style={{
       position: 'fixed',
       top: 0,
       width: '100%',
@@ -45,6 +45,7 @@ const Navbar: React.FC = () => {
               <Link
                 key={link.name}
                 to={link.path}
+                aria-current={location.pathname === link.path ? 'page' : undefined}
                 style={{
                   color: activeLink(link.path),
                   fontWeight: 500,
@@ -98,15 +99,15 @@ const Navbar: React.FC = () => {
             {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
           </button>
           
-          <div className="nav-mobile-toggle" onClick={() => setIsOpen(!isOpen)} style={{ display: 'none', cursor: 'pointer' }}>
+          <button type="button" aria-label={isOpen ? 'Close navigation' : 'Open navigation'} aria-expanded={isOpen} aria-controls="mobile-navigation" className="nav-mobile-toggle" onClick={() => setIsOpen(!isOpen)} style={{ display: 'none', cursor: 'pointer', background: 'transparent', color: 'var(--text-main)' }}>
             {isOpen ? <X size={28} /> : <Menu size={28} />}
-          </div>
+          </button>
         </div>
       </div>
 
       {/* Mobile Menu - Simplified for now */}
       {isOpen && (
-        <div style={{
+        <div id="mobile-navigation" onKeyDown={event => { if (event.key === 'Escape') setIsOpen(false); }} style={{
           position: 'absolute',
           top: '100%',
           left: 0,
@@ -121,6 +122,7 @@ const Navbar: React.FC = () => {
             <Link
               key={link.name}
               to={link.path}
+                aria-current={location.pathname === link.path ? 'page' : undefined}
               onClick={() => setIsOpen(false)}
               style={{ color: activeLink(link.path) }}
             >

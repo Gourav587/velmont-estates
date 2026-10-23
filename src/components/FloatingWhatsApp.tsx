@@ -34,11 +34,12 @@ const FloatingWhatsApp: React.FC = () => {
         {whatsappNumbers.map((item, index) => (
           <a
             key={index}
+            tabIndex={isOpen ? 0 : -1}
             href={`https://wa.me/${item.number}`}
             target="_blank"
             rel="noopener noreferrer"
             style={{
-              background: 'white',
+              background: 'var(--secondary)',
               color: 'var(--text-main)',
               padding: '0.8rem 1.5rem',
               borderRadius: '50px',
@@ -60,7 +61,7 @@ const FloatingWhatsApp: React.FC = () => {
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = 'translateX(0)';
-              e.currentTarget.style.background = 'white';
+              e.currentTarget.style.background = 'var(--secondary)';
               e.currentTarget.style.color = 'var(--text-main)';
             }}
           >
@@ -73,6 +74,8 @@ const FloatingWhatsApp: React.FC = () => {
       {/* Main Toggle Button */}
       <button 
         onClick={() => setIsOpen(!isOpen)}
+        aria-label={isOpen ? 'Close WhatsApp contacts' : 'Open WhatsApp contacts'}
+        aria-expanded={isOpen}
         style={{
           background: isOpen ? '#ff4444' : '#25D366',
           color: 'white',

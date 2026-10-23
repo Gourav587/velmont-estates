@@ -1,87 +1,54 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-
-export interface Project {
-  id: string;
-  title: string;
-  location: string;
-  category: string;
-  image: string;
-  description?: string;
-}
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import type { ReactNode } from 'react';
+import type { Project } from '../types/project';
+export type { Project } from '../types/project';
 
 interface ProjectContextType {
   projects: Project[];
-  addProject: (project: Omit<Project, 'id'>) => void;
-  updateProject: (id: string, project: Partial<Project>) => void;
-  deleteProject: (id: string) => void;
+  loading: boolean;
+  error: string;
+  refresh: () => Promise<void>;
+  addProject: (project: Omit<Project, 'id'>) => Promise<void>;
+  updateProject: (id: string, project: Omit<Project, 'id'>) => Promise<void>;
+  deleteProject: (id: string) => Promise<void>;
 }
-
 const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
-
-const DEFAULT_PROJECTS: Project[] = [
-  {
-    id: '1',
-    title: 'Amritsar Green Heights',
-    location: 'Ranjit Avenue, Amritsar',
-    category: 'Residential',
-    image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    description: 'Premium luxury apartments with modern amenities.'
-  },
-  {
-    id: '2',
-    title: 'Pathankot Business Hub',
-    location: 'Dalhousie Road, Pathankot',
-    category: 'Commercial',
-    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    description: 'Prime business hub in the heart of Zirakpur.'
-  },
-  {
-    id: '3',
-    title: 'Gurdaspur Royal Estates',
-    location: 'Tibber Road, Gurdaspur',
-    category: 'Luxury Plots',
-    image: 'https://images.unsplash.com/photo-1500382017468-9049fee74a62?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    description: 'Exclusive plots for custom luxury homes.'
-  }
-];
-
-export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [projects, setProjects] = useState<Project[]>(() => {
-    try {
-      const saved = localStorage.getItem('velmont_projects');
-      return saved ? JSON.parse(saved) : DEFAULT_PROJECTS;
-    } catch (e) {
-      console.error('Failed to parse projects from localStorage', e);
-      return DEFAULT_PROJECTS;
-    }
-  });
-
-  useEffect(() => {
-    localStorage.setItem('velmont_projects', JSON.stringify(projects));
-  }, [projects]);
-
-  const addProject = (project: Omit<Project, 'id'>) => {
-    const newProject = { ...project, id: Date.now().toString() };
-    setProjects([...projects, newProject]);
+async function request(path = '', options?: RequestInit) {
+  const response = await fetch(`/api/projects${path}`, { ...options, credentials: 'same-origin', headers: { 'Content-Type': 'application/json' } });
+  if (!response.headers.get('content-type')?.includes('application/json')) throw new Error('Listings are temporarily unavailable. Please try again.');
+  const body = await response.json();
+  if (!response.ok) throw new Error(body.error || 'Unable to save your changes.');
+  return body;
+}
+export function ProjectProvider({ children }: { children: ReactNode }) {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const refresh = useCallback(async () => {
+    setLoading(true);
+    setError('');
+    try { setProjects(await request()); }
+    catch (error) { setError(error instanceof Error ? error.message : 'Unable to load listings.'); }
+    finally { setLoading(false); }
+  }, []);
+  useEffect(() => { void refresh(); }, [refresh]);
+  const addProject = async (project: Omit<Project, 'id'>) => {
+    const saved = await request('', { method: 'POST', body: JSON.stringify(project) });
+    setProjects(current => [saved, ...current]);
   };
-
-  const updateProject = (id: string, updatedFields: Partial<Project>) => {
-    setProjects(projects.map(p => p.id === id ? { ...p, ...updatedFields } : p));
+  const updateProject = async (id: string, project: Omit<Project, 'id'>) => {
+    const saved = await request(`?id=${encodeURIComponent(id)}`, { method: 'PUT', body: JSON.stringify(project) });
+    setProjects(current => current.map(item => item.id === id ? saved : item));
   };
-
-  const deleteProject = (id: string) => {
-    setProjects(projects.filter(p => p.id !== id));
+  const deleteProject = async (id: string) => {
+    await request(`?id=${encodeURIComponent(id)}`, { method: 'DELETE', body: '{}' });
+    setProjects(current => current.filter(item => item.id !== id));
   };
-
-  return (
-    <ProjectContext.Provider value={{ projects, addProject, updateProject, deleteProject }}>
-      {children}
-    </ProjectContext.Provider>
-  );
-};
-
-export const useProjects = () => {
+  return <ProjectContext.Provider value={{ projects, loading, error, refresh, addProject, updateProject, deleteProject }}>{children}</ProjectContext.Provider>;
+}
+export function useProjects() {
   const context = useContext(ProjectContext);
-  if (!context) throw new Error('useProjects must be used within a ProjectProvider');
+  if (!context) throw new Error('useProjects must be used within ProjectProvider');
   return context;
-};
+}

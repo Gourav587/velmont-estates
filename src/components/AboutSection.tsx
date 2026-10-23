@@ -7,7 +7,7 @@ const AboutSection: React.FC = () => {
       <div className="container">
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 400px), 1fr))',
           gap: '4rem',
           alignItems: 'center'
         }}>
@@ -20,7 +20,7 @@ const AboutSection: React.FC = () => {
             }}>
               <img 
                 src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
-                alt="Modern Real Estate" 
+                alt="Illustrative real estate photograph" loading="lazy" decoding="async" width={1000} height={667}
                 style={{ width: '100%', display: 'block' }}
               />
             </div>
@@ -50,7 +50,7 @@ const AboutSection: React.FC = () => {
               Redefining Real Estate in the <span style={{ color: 'var(--accent)' }}>Triregion</span> (Pathankot, Gurdaspur, Amritsar)
             </h2>
             <p style={{ color: 'var(--text-muted)', marginBottom: '2rem', fontSize: '1.1rem' }}>
-              At Velmont Estates, we don't just sell properties; we build legacies. Specializing in premium estates and luxury living, we provide personalized, data-driven real estate solutions for our elite clientele.
+              At Velmont Estates, we help you compare property options across Pathankot, Gurdaspur, and Amritsar. From the first shortlist to negotiations, our focus is on clear information and personal guidance.
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>

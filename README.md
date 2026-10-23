@@ -1,73 +1,46 @@
-# React + TypeScript + Vite
+# Velmont Estates
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React and TypeScript property website for Pathankot, Gurdaspur, and Amritsar, hosted on Netlify.
 
-Currently, two official plugins are available:
+## Listings and administration
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Public listings load from `/api/projects`. Netlify Database stores the shared portfolio; schema definitions live in `db/schema.ts`, and migrations live in `netlify/database/migrations`. Netlify applies migrations during deployment. Do not apply them manually.
 
-## React Compiler
+The `/admin` page uses Netlify Identity. Every create, update, and delete request also checks the authenticated user's server-controlled `admin` role in the function. There is no public registration form and no automatic administrator assignment.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+To activate the first administrator:
 
-## Expanding the ESLint configuration
+1. Open the project's Identity section in the Netlify dashboard and invite the intended administrator.
+2. Follow the invitation link to set a password on the site.
+3. In the Identity user details, assign the `admin` role and save.
+4. Sign in again at `/admin` to refresh the role.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Set Identity registration to invite-only for an administrator-only user directory. An ordinary account cannot manage listings even if registration is open.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+The original three portfolio examples are seeded as illustrative listings. Their stock photos and unconfirmed details are explicitly disclosed. Replace them with verified photos, prices, area, availability, and applicable RERA details before promoting them as actual inventory. Gallery images use HTTPS URLs, with up to eight additional images per listing. Prices are optional whole rupee amounts; listings without prices do not appear in budget-filtered results.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Old browser-only listings are not automatically published or uploaded. If a browser contains custom entries from the previous version, recreate the verified entries in the administrator page. The old `velmont_projects` browser value is left untouched.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Enquiries
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+The contact form uses Netlify Forms with a static registration form in `public/__forms.html`, matching fields, and a honeypot. Property enquiries include the selected listing ID and title. Submissions are available in the project's Forms section after deployment. Configure email notifications in Forms → Submission notifications if email alerts are desired. The previous EmailJS dependency and configuration are no longer used.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+The form reports server errors and retains the message for retry. Browser tests intercept submissions, so automated checks do not create real enquiries or send email.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Search and metadata
+
+Public filters are reflected in the URL and can be shared. The website includes descriptive route titles, canonical URLs, social metadata, a privacy notice, structured data for the business and verified properties, robots instructions, and a database-backed sitemap. Illustrative property pages and administration are marked `noindex`.
+
+Route metadata is updated in the browser. Crawlers that do not execute JavaScript see the shared HTML metadata; full prerendering remains a separate enhancement. The sitemap uses the current production domain; update the domain in the metadata component, sitemap function, robots file, and HTML if a custom domain is introduced.
+
+## Development and checks
+
+Install dependencies with `npm ci`. Use `netlify dev --port 8889` to run the app with Netlify Functions and Identity support.
+
+- `npm run typecheck` checks frontend and function types without emitting files.
+- `npm run lint` checks source style and React hooks.
+- `npm test` checks listing validation and unauthenticated API rejection.
+- `npx playwright install chromium` installs the browser used by the interaction checks.
+- `npm run test:browser` runs browser checks against an already running Netlify development server on port 8889.
+
+Browser checks use mocked listing responses and form submissions. Database persistence and real invitation / email delivery require verification on a deployed site after automatic migrations and the first administrator setup.

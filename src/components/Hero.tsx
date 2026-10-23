@@ -1,5 +1,6 @@
 import React from 'react';
-import { Mail, MessageCircle } from 'lucide-react';
+import { ArrowUpRight, MessageCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Hero: React.FC = () => {
   return (
@@ -38,7 +39,7 @@ const Hero: React.FC = () => {
             marginBottom: '1rem',
             fontSize: '0.9rem'
           }}>
-            Invest in the Future
+            Pathankot · Gurdaspur · Amritsar
           </h4>
           <h1 style={{
             fontSize: 'clamp(2.5rem, 8vw, 4.5rem)',
@@ -46,7 +47,7 @@ const Hero: React.FC = () => {
             marginBottom: '1.5rem',
             fontFamily: 'var(--font-heading)'
           }}>
-            Elevate your <span style={{ color: 'var(--accent)' }}>lifestyle</span> living
+            A place to call <span style={{ color: 'var(--accent)' }}>your own.</span>
           </h1>
           <p style={{
             fontSize: '1.2rem',
@@ -66,8 +67,8 @@ const Hero: React.FC = () => {
               <MessageCircle size={20} />
               WhatsApp
             </a>
-            <a
-              href="mailto:velmontestate@gmail.com"
+            <Link
+              to="/projects"
               className="btn"
               style={{
                 border: '1px solid var(--border)',
@@ -76,9 +77,9 @@ const Hero: React.FC = () => {
                 color: 'var(--text-main)'
               }}
             >
-              <Mail size={20} />
-              Email Us
-            </a>
+              <ArrowUpRight size={20} />
+              Explore properties
+            </Link>
           </div>
         </div>
       </div>

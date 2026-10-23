@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /__forms.html
+Sitemap: https://velomtestates.netlify.app/sitemap.xml
