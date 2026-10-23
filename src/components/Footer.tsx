@@ -1,5 +1,5 @@
 import React from 'react';
-import { MessageCircle, Mail, Globe, Instagram } from 'lucide-react';
+import { MessageCircle, Mail, Instagram } from 'lucide-react';
 import logo from '../assets/logo.png';
 import { Link } from 'react-router-dom';
 
@@ -9,12 +9,12 @@ const Footer: React.FC = () => {
       <div className="container">
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))',
           gap: '4rem',
           marginBottom: '4rem'
         }}>
           {/* Brand */}
-          <div style={{ gridColumn: 'span 2' }}>
+          <div className="footer-brand" style={{ gridColumn: 'span 2' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem' }}>
               <img 
                 src={logo} 
@@ -40,6 +40,7 @@ const Footer: React.FC = () => {
               <li><Link to="/about" style={linkStyle}>About Us</Link></li>
               <li><Link to="/services" style={linkStyle}>Services</Link></li>
               <li><Link to="/contact" style={linkStyle}>Contact</Link></li>
+              <li><Link to="/privacy" style={linkStyle}>Privacy notice</Link></li>
             </ul>
           </div>
 
@@ -47,10 +48,9 @@ const Footer: React.FC = () => {
           <div>
             <h4 style={{ marginBottom: '1.5rem', fontSize: '1.1rem' }}>Follow Us</h4>
             <div style={{ display: 'flex', gap: '1rem' }}>
-              <a href="https://www.instagram.com/velmont.estate?igsh=cHYyZjY3eDE4dzI2" target="_blank" rel="noopener noreferrer" style={socialIconStyle}><Instagram size={20} /></a>
-              <a href="https://wa.me/918284883282" target="_blank" rel="noopener noreferrer" style={socialIconStyle}><MessageCircle size={20} /></a>
-              <a href="mailto:velmontestate@gmail.com" style={socialIconStyle}><Mail size={20} /></a>
-              <a href="#" style={socialIconStyle}><Globe size={20} /></a>
+              <a aria-label="Velmont Estates on Instagram" href="https://www.instagram.com/velmont.estate?igsh=cHYyZjY3eDE4dzI2" target="_blank" rel="noopener noreferrer" style={socialIconStyle}><Instagram size={20} /></a>
+              <a aria-label="Contact us on WhatsApp" href="https://wa.me/918284883282" target="_blank" rel="noopener noreferrer" style={socialIconStyle}><MessageCircle size={20} /></a>
+              <a aria-label="Email Velmont Estates" href="mailto:velmontestate@gmail.com" style={socialIconStyle}><Mail size={20} /></a>
             </div>
           </div>
         </div>

@@ -1,16 +1,23 @@
 import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { formatPrice } from '../types/project';
 
 interface ProjectCardProps {
+  id: string;
+  price?: number | null;
+  area?: string;
+  isIllustrative?: boolean;
   title: string;
   location: string;
   image: string;
   category: string;
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ title, location, image, category }) => {
+const ProjectCard: React.FC<ProjectCardProps> = ({ id, title, location, image, category, price, area, isIllustrative }) => {
   return (
-    <div style={{
+    <Link to={`/projects/${encodeURIComponent(id)}`} aria-label={`View ${title}`} style={{
+      display: 'block',
       borderRadius: '20px',
       overflow: 'hidden',
       background: 'var(--primary)',
@@ -27,8 +34,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ title, location, image, categ
         overflow: 'hidden'
       }}>
         <img 
-          src={image} 
-          alt={title} 
+          src={image}
+          loading="lazy" decoding="async" width={800} height={600}
+          alt={isIllustrative ? `Illustrative photo for ${title}` : title}
           style={{
             width: '100%',
             height: '100%',
@@ -61,6 +69,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ title, location, image, categ
           {location}
         </p>
         
+        <p className="property-price">{formatPrice(price)}{area ? ` · ${area}` : ''}</p>
+        {isIllustrative && <p className="photo-note">Illustrative listing · details to be confirmed</p>}
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -84,7 +94,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ title, location, image, categ
           transform: scale(1.1);
         }
       `}</style>
-    </div>
+    </Link>
   );
 };
 
